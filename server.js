@@ -34,7 +34,7 @@ app.use(CORS(corsOptions))
 app.use(compression());
 
 // set appropriate HTTP headers that help protect your app from well-known web vulnerabilities
-app.use(helmet()); 
+// app.use(helmet()); 
 
 app.use(express.static('public'))
 

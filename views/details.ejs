@@ -81,11 +81,17 @@
                     <img src="/img/train-icon-ezt.svg"
                     alt="ezt-icon"
                     srcset="/img/train-icon-ezt.svg" />
+                <% } else if (connection.service == "ZKA") { %>
+                    <img src="/img/bus-icon.svg"
+                    alt="bus-icon"
+                    srcset="/img/bus-icon.svg" 
+                    style="height: 40px; width: 150px; scale: 4"/>
                 <% } else { %>
                     <img src="/img/train-icon-wag.svg"
-                    alt="ezt-icon"
+                    alt="wag-icon"
                     srcset="/img/train-icon-wag.svg" />
                 <% } %>
+                     
                 
             </div>
 
