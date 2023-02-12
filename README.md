@@ -1,44 +1,37 @@
-# intercity-project
-![npm](https://img.shields.io/npm/v/npm?color=%23FFFFFF&style=for-the-badge)![GitHub last commit](https://img.shields.io/github/last-commit/krisior/intercity-project?color=%23002664&style=for-the-badge)
-![GitHub top language](https://img.shields.io/github/languages/top/krisior/intercity-project?color=%23FF6319&style=for-the-badge)
-![GitHub](https://img.shields.io/github/license/krisior/intercity-project?color=%2300B4D7&style=for-the-badge)
+## carrier-api-service
+![npm](https://img.shields.io/npm/v/npm?color=%23FFFFFF&style=for-the-badge)![GitHub last commit](https://img.shields.io/github/last-commit/krisior/carrier-api-service?color=%23002664&style=for-the-badge)
+![GitHub top language](https://img.shields.io/github/languages/top/krisior/carrier-api-service?color=%23FF6319&style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/krisior/carrier-api-service?color=%2300B4D7&style=for-the-badge)
 
-A modern UI/UX design project for the website of the Polish national railway carrier PKP Intercity. 
+a modern UI/UX design and logic control for carrier service API (with connection to custom mongoDB database)
 
-The work performed (hereafter referred to as the Project) is charitable and does not involve a formal cooperation agreement or contract for work.
+the work performed (hereafter referred to as the Project) is charitable and does not involve a formal cooperation agreement or contract for work
 
-> --- **font used** ---
+[![](https://webimages.mongodb.com/_com_assets/cms/kuyjf3vea2hg34taa-horizontal_default_slate_blue.svg?auto=format%252Ccompress)](https://www.mongodb.com/)
 
-> Tahoma Regular, Tahoma Bold
-> Montserrat Light, Montserrat Regular, Montserrat Bold
-> Fira Sans Regular, Fira Sans Bold
+[![](https://expressjs.com/images/express-facebook-share.png)](https://expressjs.com/)
 
->  --- **colors used** --- **main page** ---
+[TOC]
 
-> navy blue > #002664
-> navy blue logo > #0A2255
-> light blue > #00B4D7
+## main idea
+### design
+### coverage
+## install
 
-> orange > #FF6319
+## handling
+### settings
+### user control
+### station and stop control
+### connection control
 
-> white > #FFFFFF
+## wip
+### authentication and authorization
+#### registration and login
+#### admin control over website
+#### custom middleware actions
+### settings control
+### copying documents in single collection
 
-> gray >
-> dark gray >
-> darker gray >
+## final provision
 
->  --- **colors used** --- **categories** ---
-
-> EIP navy blue > #00386C
-> EIP light blue > #0066B3
-
-> EIC gray > #818285
-
-> IC orange > #F58220
-
-> TLK purple > #333192
-> TLK orange > #FF6319
-> TLK gray > #ABAEAF
-
->  --- **logos used** ---
-
+MIT copyright © 2023 
