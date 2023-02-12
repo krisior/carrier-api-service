@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carrier database API</title>
+    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body id="main-wrapper">
+    <div class="go-back">
+        <a href="/users"><p>powrót</p></a>
+    </div>
+
+    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    <h6>nowy użytkownik</h6>
+
+    <br>
+
+    <div class="create-wrapper">
+        <br>
+        
+        <form class="create-form-wrapper" method="POST" action="/create-user" autocomplete="off">
+            <input type="text" name="username" placeholder="nazwa użytkownika"><br>
+            <input type="password" id="password" name="password" style="font-size: 0.4rem" placeholder="hasło" 
+                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                   onkeyup="checkPasswordValidity(this.value)">
+            <div class="password-info">
+                <div><b>co najmniej:</b></div>
+                <div id="one-number">1 cyfra</div>
+                <div id="one-low">1 mała litera</div>
+                <div id="one-up">1 duża litera</div>
+                <div id="eight-ch">8 liter</div>
+            </div>
+            <span>
+                <input type="password" id="confirm_password" name="confirm_password" style="font-size: 0.4rem" placeholder="powtórz hasło">
+                &emsp14;<input class="toggle-checkbox" type="checkbox" onclick="togglePasswordVisibility()">
+                &emsp14;<label style="width: 20px"><i class="fa-solid fa-eye-slash" id="eye-icon-password"></i></label>
+            </span><br>
+            <input type="submit" class="accept-button" value="utwórz" />
+        </form>
+
+        <br>
+    </div>
+
+    <script>
+        const togglePasswordVisibility = () => {
+            const passwordElement_1a = document.getElementById("password");
+            const passwordElement_1b = document.getElementById("confirm_password");
+            const passwordElement_Eye = document.getElementById("eye-icon-password")
+
+            if (passwordElement_1a.type === "password") {
+                passwordElement_1a.type = "text";
+                passwordElement_1b.type = "text";
+                passwordElement_Eye.className = "fa-solid fa-eye"
+            } else {
+                passwordElement_1a.type = "password";
+                passwordElement_1b.type = "password";
+                passwordElement_Eye.className = "fa-solid fa-eye-slash"
+            }
+        }
+
+        const hasLowerCase = str => {
+            return str.toUpperCase() != str
+        } 
+
+        const hasUpperCase = str => {
+            return str.toLowerCase() != str
+        }
+
+        const isNumeric = str => {
+            for(var i = 0; i < str.length; i++) {
+                if(!isNaN(parseFloat(str[i]))) return true
+            }
+            return false
+        }
+
+        const checkPasswordValidity = password => {
+            const number = document.getElementById("one-number")
+            const low = document.getElementById("one-low")
+            const upper = document.getElementById("one-up")
+            const characterCheck = document.getElementById("eight-ch")
+
+            if(password.length > 8) {
+                characterCheck.style.color = "green"
+            } else {
+                characterCheck.style.color = "var(--font-search-color)"
+            }
+
+            if(hasLowerCase(password)) {
+                low.style.color = "green"
+            } else {
+                low.style.color = "var(--font-search-color)"
+            }
+
+            if(hasUpperCase(password)) {
+                upper.style.color = "green"
+            } else {
+                upper.style.color = "var(--font-search-color)"
+            }
+
+            if(isNumeric(password)) {
+                number.style.color = "green"
+            } else {
+                number.style.color = "var(--font-search-color)"
+            }
+        }
+    </script>
+</body>
+</html>

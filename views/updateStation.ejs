@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carrier database API</title>
+    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body id="main-wrapper">
+    <div class="go-back">
+        <a href="/stations"><p>powrót</p></a>
+    </div>
+
+    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    <h6>edytuj istniejące dane stacyjne</h6>
+
+    <br>
+
+    <div class="update-wrapper" style="height: 110%">
+        
+        <form class="update-form-wrapper" method="POST" action="/update-station">
+
+            <label class="password-info" style="font-size: 0.4rem; color: var(--font-search-color); margin-bottom: 5px">
+                wyszukaj po nazwie stacji
+            </label>
+
+            <input type="search" list="stations" class="select-input" id="station-search-0" name="s_id" placeholder="stary identyfikator stacji" onchange="resetIfInvalid(this)" required>
+            <datalist id="stations">
+                <% stationsList.forEach(station => { %> 
+                <option value="<%= station.s_id %>"> <%= station.name %> </option>
+                <% }) %>
+            </datalist>
+            
+            <br>
+
+            <input type="text" name="new_s_id" placeholder="nowy identyfikator stacji">
+            <div style="height: 10px"></div>
+            <input type="text" name="name" placeholder="nowa nazwa stacji">
+
+            <div class="password-info">
+                <div><b>format krajowy:</b></div>
+                <div id="format-przyklad">np. 
+                    <i>
+                    <span style="display: inline; color: green">6</span>
+                    <span style="display: inline; color: blue">00</span>
+                    <span style="display: inline; color: red">2700</span>
+                    <span style="display: inline; color: black">0</span> --- Wrocław Główny
+                    </i>
+                </div>
+                <div id="format"> 
+                    <span style="display: inline; color: green">6</span> - id_zakladu<br> 
+                    <span style="display: inline; color: blue">00</span> - zero_kontrolne - dop. 8 znaków<br> 
+                    <span style="display: inline; color: red">2700</span> - id_obiektu<br> 
+                    <span style="display: inline; color: black">0</span> - kod_kategoria_stacji
+                </div>
+            </div>
+            <div class="password-info">
+                <div><b>format międzynarodowy:</b></div>
+                <div id="format-przyklad">np. 
+                    <i>
+                    <span style="display: inline; color: green">1</span>
+                    <span style="display: inline; color: blue">111</span>
+                    <span style="display: inline; color: red">100</span>
+                    <span style="display: inline; color: black">0</span> --- Berlin Hauptbahnhof
+                    </i>
+                </div>
+                <div id="format"> 
+                    <span style="display: inline; color: green">1</span> - id_panstwa (1 - Niemcy, 2 - Czechy, 3 - Austria, 4 - Węgry, 5 - Słowacja, 6 - Ukraina, 7 - Białoruś, 8 - Litwa)<br> 
+                    <span style="display: inline; color: blue">111</span> - jeden_kontrolne - dop. 8 znaków<br> 
+                    <span style="display: inline; color: red">100</span> - id_obiektu (liczba porządkowa)<br> 
+                    <span style="display: inline; color: black">0</span> - kod_kategoria_stacji (0 - stacja pasażerska, 1 - stacja graniczna)
+                </div>
+            </div><br>
+
+            <input type="number" name="weight" min="0" max="99" placeholder="nowa waga nadana (UIC-01-2023-008)"><br>
+
+            <input type="submit" class="accept-button" value="modyfikuj" />
+        </form>
+
+        
+    </div>
+    <br>
+</body>
+</html>

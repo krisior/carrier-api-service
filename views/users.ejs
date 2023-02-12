@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carrier database API</title>
+    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body id="main-wrapper"
+    style = <% if (openPopUp) { %> 
+        "overflow-y: hidden" 
+    <% } else { %>
+        "overflow-y: auto"
+    <% } %>
+>
+    <div class="go-back">
+        <a href="/"><p>powrót</p></a>
+    </div>
+
+    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    <h6>użytkownicy</h6>
+    <br>
+
+    <div class="popup-created" 
+        style = <% if (openPopUp) { %> 
+                    "display: grid" 
+                <% } else { %>
+                    "display: none"
+                <% } %>
+    >
+        <div class="inner">
+            <span class="message-box"><%= message %></span>&emsp14;&emsp14;&emsp14;
+            <span class="confirm-close-popup"><a href="/users"><button onclick="window.location.reload()">OK</button></a></span>
+        </div>
+        <br>
+    </div>
+
+    <div class="search-create-wrapper">
+        <span class="search-box" style="width: 40%">            
+            <input type="text" id="search-input"
+            onkeyup="searchThroughTable()" placeholder="nazwa użytkownika">
+        </span>
+        <span class="create-station-box">
+            <a href="/create-user"><button>nowy użytkownik</button></a>&emsp14;
+            <a href="/update-user"><button style="background-color: var(--font-search-color)">modyfikuj istniejące dane użytkownika<br>
+                <span style="font-size: 0.4rem"><i>panel administratora</i></button></a>
+        </span>
+    </div>
+
+    <br>
+
+    <!-- LIST ITSELF -->
+    <div class="list users" id="users-list">
+        <table>
+            <tr style="height: 50px">
+                <th style="width: 800px">ID / nazwa użytkownika</th>
+                <th style="width: 125px">status<br>zalogowania</th>
+                <th style="width: 75px; border-bottom: none"></th>
+            </tr>
+
+            <% usersList.forEach(user => { %>
+                <tr class="list-row">
+                    <td class="list-update-hover"
+                        style= <% if (user.active) { %> 
+                                    "background-color: rgb(19, 148, 41, 0.2)"> 
+                                <% } else { %>
+                                    "background-color: rgb(148, 19, 19, 0.2)"> 
+                                <% } %>
+                                <%= user.username %> 
+                    </td>
+                    <td class="list-update-hover" 
+                        style="color: #ffffff; font-size: 0.3rem; <% if (user.active) { %> 
+                                                                        background-color: var(--modal-green)"> zalogowany 
+                                                                    <% } else { %>
+                                                                        background-color: var(--modal-red)"> niezalogowany 
+                                                                    <% } %>
+                    </td>
+                    <td class="list-icons">
+                        <span>
+                            <form method="POST" action="/users">
+                                <input type="hidden" name="username" value="<%= user.username %>">
+                                <button type="submit"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                        </span>
+                    </td>
+                </tr>
+            <% }) %>
+            
+        </table>
+    </div>
+
+    <br>
+    <div class="footer">
+        <div>ostatnia aktualizacja: 15.02.2023</div>
+        <div>copyright © 2023</div>
+    </div>
+
+    <script>
+        const searchThroughTable = () => {
+            const input = document.getElementById("search-input")
+            const table = document.getElementById("users-list")
+            const tr = table.getElementsByTagName("tr")
+            const filter = input.value.toUpperCase()
+        
+            for (var i = 0; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName("td")[0]
+            
+                if (td) {
+                    const txtValue = td.textContent || td.innerText
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = ""
+                    } else {
+                        tr[i].style.display = "none"
+                    }
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>
