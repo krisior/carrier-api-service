@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carrier database API</title>
+    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body id="main-wrapper"
+    style = <% if (openPopUp) { %> 
+        "overflow-y: hidden" 
+    <% } else { %>
+        "overflow-y: auto"
+    <% } %>
+>
+    <div class="go-back">
+        <a href="/"><p>powrót</p></a>
+    </div>
+
+    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    <h6>dane połączeń</h6>
+    <br>
+
+    <div class="popup-created" 
+        style = <% if (openPopUp) { %> 
+                    "display: grid" 
+                <% } else { %>
+                    "display: none"
+                <% } %>
+    >
+        <div class="inner">
+            <span class="message-box"><%= message %></span>&emsp14;&emsp14;
+            <span class="confirm-close-popup"><a href="/connections"><button onclick="window.location.reload()">OK</button></a></span>
+        </div>
+        <br>
+    </div>
+    
+    <div class="search-create-wrapper">
+        <span class="search-box">
+            <input type="text" id="search-input" onkeyup="searchThroughTable()" placeholder="nr pociągu / nazwa pociągu">
+        </span>
+        <span class="create-station-box">
+            <a href="/create-connection"><button>nowe połączenie</button></a> &emsp14; 
+            <a href="/update-connection-system"><button class="" style="background-color: var(--font-search-color)">modyfikuj systemowe dane połączeń<br>
+                <span style="font-size: 0.4rem"><i>panel administratora</i>
+                </button>
+            </a>
+        </span>
+    </div>
+
+    <br>
+
+    <!-- LIST ITSELF -->
+    <div class="connections-list" id="connections-list">
+        <table>
+            <tr>
+                <th style="width: 100px">c_id</th>
+                <th style="width: 100px">numer</th>
+                <th style="width: 250px">nazwa</th>
+                <th style="width: 800px">przebieg trasy</th>
+                <th style="width: 40px; border-bottom: none"></th>
+                <th style="width: 40px; border-bottom: none"></th>
+                <th style="width: 40px; border-bottom: none"></th>
+            </tr>
+            <% connectionList.forEach(connection => { %>
+                <% if (connection.c_id.search("MOD") == -1) { %>
+                
+                    <tr class="connections-list-row">
+                        <td class="connections-list-update-hover" style="font-size: 0.3rem"> <%= connection.c_id %> </td>
+                        <td class="connections-list-update-hover" style="font-size: 0.5rem"> 
+                            <% if (connection.serviceSpecialNumber) { %>
+                                (<%= connection.serviceSpecialNumber %>)<br>
+                            <% } %>
+                            <%= connection.serviceNumber %> </td>
+                        <td class="connections-list-update-hover" style="font-size: 0.5rem">
+                            <%= connection.service %> 
+                            <% if (connection.serviceName) { %>
+                                <span style="color: var(--font-color); font-weight: 600; font-size: 0.4rem"> <br><%= connection.serviceName %> </span>
+                            <% } %>
+                        </td>
+                        <td class="connections-list-information" id="info-<%=connection.c_id%>-simple">
+                            <div>
+                                <b><%= connection.origin %> <%= connection.departure %></b> 
+                            </div>
+
+                            <br>
+
+                            <div>
+                                <% var last = 39 // PRE-LAST OF MAX-ARRAY %>
+                                <% if (connection.viaStations !== undefined) { %>
+                                    <% for(var i = 0; i < last; i++) { %>
+                                        <% var station = connection.viaStations[i] %>
+                                        <% if (connection.viaDepartureTime !== undefined) %>
+                                            <% var stationDeparture = connection.viaDepartureTime[i] %>                                    
+
+                                        <% if (!station) continue %>
+                                            - <%= station %> 
+                                
+                                        <% if (!stationDeparture) { %> 
+                                            <% continue %> 
+                                        <% } %>
+
+                                        <% if (connection.viaStations[i+1] === undefined || connection.viaStations[i+1] == "") { %> 
+                                            <%= stationDeparture %>
+                                            <% break %> 
+                                        <% } %>
+
+                                        <%= stationDeparture %>
+                                        
+                                    <% } %>
+
+                                    <% var stationLast = connection.viaStations[last] %>
+                                    <% if (connection.viaDepartureTime !== undefined) %>
+                                        <% var stationDepartureLast = connection.viaDepartureTime[last] %>    
+                                    
+                                    <% if (stationLast) %>
+                                        <%= stationLast %>  
+
+                                    <% if (stationDepartureLast) %>
+                                        <%= stationDepartureLast %>  
+                                    
+                                    -
+                                <% } else { %>
+                                    -
+                                <% } %> 
+                            </div>
+
+                            <br>
+
+                            <div>
+                                <b><%= connection.destination %> <%= connection.arrival %></b>                        
+                            </div>
+                        </td>
+
+                        <td class="connections-list-icons">
+                            <span>
+                                <form method="POST" action="/connections/details">
+                                    <input type="hidden" name="c_id" value="<%= connection.c_id %>">
+                                    <button type="submit"><i class="fa-solid fa-angles-right"></i></button>
+                                </form>
+                            </span>
+                        </td>
+                        <td class="connections-list-icons">
+                            <span>
+                                <form method="POST" action="/copy-connection">
+                                    <input type="hidden" name="c_id" value="<%= connection.c_id %>">
+                                    <button type="submit" disabled><i class="fa-solid fa-copy no-hover"></i></button>
+                                </form>
+                            </span>
+                        </td>
+                        <td class="connections-list-icons">
+                            <span>
+                                <form method="POST" action="/delete-connection">
+                                    <input type="hidden" name="c_id" value="<%= connection.c_id %>">
+                                    <button type="submit"><i class="fa-solid fa-trash"></i></button>
+                                </form>
+                            </span>
+                        </td>
+                    </tr>                
+                <% } else { %>
+                    <tr>
+                        <td class="connections-list-update-hover" style="font-size: 0.3rem"> <%= connection.c_id %> </td>
+                        <td></td>
+                        <td></td>
+                        <td style="background-color: var(--modal-red); color: var(--background)">WYMAGANA MODYFIKACJA</td>
+                        <td class="connections-list-icons">
+                            <span>
+                                <form method="POST" action="/connections/details">
+                                    <input type="hidden" name="c_id" value="<%= connection.c_id %>">
+                                    <button type="submit"><i class="fa-solid fa-angles-right"></i></button>
+                                </form>
+                            </span>
+                        </td>
+                        <td></td>
+                        <td class="connections-list-icons">
+                            <span>
+                                <form method="POST" action="/delete-connection">
+                                    <input type="hidden" name="c_id" value="<%= connection.c_id %>">
+                                    <button type="submit"><i class="fa-solid fa-trash"></i></button>
+                                </form>
+                            </span>
+                        </td>
+                    </tr>
+                <% } %>
+            <% }) %>
+        </table>
+    </div>
+
+    <br>
+    <div class="footer">
+        <div>ostatnia aktualizacja: 15.02.2023</div>
+        <div>copyright © 2023</div>
+    </div>
+
+    <script>
+        const searchThroughTable = () => {
+            const input = document.getElementById("search-input")
+            const table = document.getElementById("connections-list")
+            const tr = table.getElementsByTagName("tr")
+
+            const filter = input.value.toUpperCase()
+        
+            for (var i = 0; i < tr.length; i++) {
+                const td0 = tr[i].getElementsByTagName("td")[1] // number
+                const td1 = tr[i].getElementsByTagName("td")[2] // name
+            
+                if (td0 && td1) {
+                    const txtValue0 = td0.textContent || td0.innerText
+                    const txtValue1 = td1.textContent || td1.innerText
+                    if (txtValue0.toUpperCase().indexOf(filter) > -1 ||
+                        txtValue1.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = ""
+                    } else {
+                        tr[i].style.display = "none"
+                    }
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>

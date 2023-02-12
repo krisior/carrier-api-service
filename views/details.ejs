@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carrier database API</title>
+    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body id="main-wrapper"
+    style = <% if (openPopUp) { %> 
+        "overflow-y: hidden" 
+    <% } else { %>
+        "overflow-y: auto"
+    <% } %>
+>
+    <div class="go-back">
+        <a href="/connections"><p>powrót</p></a>
+    </div>
+
+    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    <div class="search-create-wrapper">
+        <span class="search-box">
+            <div class="details-title">dane połączenia<span style="font-size: 0.3rem"> &emsp14;<i> c_id: <%= connection.c_id %></i></span> <br>
+                <span style="font-size: 0.7rem">
+                    <%= connection.service %> 
+                    <% if (connection.serviceSpecialNumber) { %>
+                        (<%= connection.serviceSpecialNumber %>)
+                    <% } %> <%= connection.serviceNumber %>&nbsp;
+                </span> 
+                <span style="color: var(--font-color); font-size: 0.7rem">
+                    <% if (connection.serviceName) { %>
+                        <%= connection.serviceName %>
+                    <% } %>
+                </span> 
+            </div>
+        </span>
+        <span class="create-station-box" style="margin-top: 10px">
+            <form method="POST" action="/update-connection">
+                <input type="hidden" name="c_id" value="<%= connection.c_id %>">
+                <input type="hidden" name="copy" value="<%= connection.copy %>" />
+                <button type="submit" id="edit-connection"><i class="fa-solid fa-edit"></i> edytuj dane połączenia</button>
+            </form>
+        </span>
+    </div>
+    
+    <br>
+
+    <div class="popup-created" 
+        style = <% if (openPopUp) { %> 
+                    "display: grid" 
+                <% } else { %>
+                    "display: none"
+                <% } %>
+    >
+        <div class="inner">
+            <span class="message-box"><%= message %></span>&emsp14;&emsp14;
+            <span class="confirm-close-popup"><a href="/connections"><button onclick="window.location.reload()">OK</button></a></span>
+        </div>
+        <br>
+    </div>
+
+    <div class="main-detail">
+        <div class="origin-destination">
+            <div class="detail-station origin">
+                <span><%= connection.origin %><br></span>
+                <span style="font-size: 0.6rem; font-weight: 300">odjazd 
+                    <span style="font-size: 0.7rem; font-weight: 400">
+                        <%= connection.departure %>
+                    </span>
+                </span><br>
+                <span style="font-size: 0.5rem; font-weight: 300">peron <%= connection.departurePlatform %>
+                    <% if (connection.departureTrack) { %>
+                        | tor <%= connection.departureTrack %></span>
+                    <% } %>
+            </div>
+            
+            <div>
+                <% if (connection.serviceEZT == "EZT") { %>
+                    <img src="/img/train-icon-ezt.svg"
+                    alt="ezt-icon"
+                    srcset="/img/train-icon-ezt.svg" />
+                <% } else { %>
+                    <img src="/img/train-icon-wag.svg"
+                    alt="ezt-icon"
+                    srcset="/img/train-icon-wag.svg" />
+                <% } %>
+                
+            </div>
+
+            <div class="detail-station destination" style="text-align: left">
+                <span><%= connection.destination %><br></span>
+                <span style="font-size: 0.6rem; font-weight: 300">przyjazd 
+                    <span style="font-size: 0.7rem; font-weight: 400">
+                        <%= connection.arrival %>
+                    </span>
+                </span><br>
+                <span style="font-size: 0.5rem; font-weight: 300">peron <%= connection.arrivalPlatform %> 
+                    <% if (connection.arrivalTrack) { %>
+                        | tor <%= connection.arrivalTrack %></span>
+                    <% } %>
+            </div>
+        </div>
+    </div>
+    
+    <br>
+
+    <div class="additional-detail">
+        <span style="font-weight: 500">szczegóły połączenia</span> 
+        <br>
+        <table class="additional-detail-table">
+            <tr style="line-height: 30px">
+                <th style="width: 40px"></th>
+                <th style="width: 200px">stacja / przystanek</th>
+                <th style="width: 70px">przyjazd</th>
+                <th style="width: 70px">odjazd</th>
+                <th style="width: 150px">kurs</th>
+                <th style="width: 40px">peron</th>
+            </tr>
+
+            <tr>
+                <td class="track-sign inactive-track-icon"><img src="/img/45x40_start_ia.svg" alt="start-ia" /></td>
+                <td style="text-align: left; padding-left: 10px"><%= connection.origin %></td>
+                <td></td>
+                <td><b><%= connection.departure %></b></td>
+                <td style="font-size: 0.35rem"><%= connection.service %> 
+                    <% if (connection.serviceSpecialNumber) { %>
+                        (<%= connection.serviceSpecialNumber %>)
+                    <% } %> 
+                    <%= connection.serviceNumber %>&nbsp;&nbsp; <%= connection.serviceName %>
+                </td>
+                <td><%= connection.departurePlatform %>
+                <% if (connection.departureTrack) { %>
+                    / <%= connection.departureTrack %></td>
+                <% } %>
+            </tr>
+
+            <% for(var i = 0; i <= connection.viaStations.length; i++) { %>
+                <% if (connection.viaStations[i]) { %>
+                    <tr>
+                        <td class="track-sign inactive-track-icon"><img src="/img/45x40_mid_ia.svg" alt="mid-ia" /></td>
+                        <td style="text-align: left; padding-left: 10px"><%= connection.viaStations[i] %></td>
+                        <% if (!connection.viaArrivalTime[i] && !connection.viaDepartureTime[i]) { %>
+                            <td><span style="font-weight: 100">|</span></td>
+                            <td><span style="font-weight: 100">|</span></td>
+                        <% } else { %>
+                            <td><%= connection.viaArrivalTime[i] %></td>
+                            <td><%= connection.viaDepartureTime[i] %></td>
+                        <% } %>
+        
+                        <td></td>
+                        <td><%= connection.viaPlatform[i] %></td>
+                    </tr>
+                <% } else { %>
+                    <% break %>
+                <% } %> 
+            <% } %>
+
+            <tr>
+                <td class="track-sign inactive-track-icon"><img src="/img/45x40_end_ia.svg" alt="end-ia" /></td>
+                <td style="text-align: left; padding-left: 10px"><%= connection.destination %></td>
+                <td><b><%= connection.arrival %></b></td>
+                <td></td>
+                <td></td>
+                <td><%= connection.arrivalPlatform %>
+                <% if (connection.arrivalTrack) { %>
+                    / <%= connection.arrivalTrack %></td>
+                <% } %>
+            </tr>
+            
+        </table>
+
+        <br>
+
+        <span style="font-weight: 500">dodatkowe informacje</span> 
+        <div class="special-info">
+            <div class="amenities-information">
+                <% if (connection.amenities !== undefined && connection.amenities.length != 0) { %>
+                    <% for(var i = 0; i <= connection.amenities.length; i++) { %>
+                        <% if (connection.amenities[i]) { %>
+                            <div><i class="fa-solid fa-arrow-right-long"></i> &emsp14; <%= connection.amenities[i] %></div>
+                        <% } %>
+                    <% } %>
+                <% } else { %>
+                    <div style="margin: -5px 0 0 -10px">brak informacji o udogodnieniach do wyświetlenia </div>
+                <% } %>
+            </div>
+            <div class="days-information">
+                <div>
+                    <table class="days-info-table">
+                        <tr>
+                            <th style="width: 170px" colspan="2">kursuje <span style="font-size: 0.3rem; font-weight: 200"><i>w okresie</i></span></th>
+                            <th>pon</th>
+                            <th>wt</th>
+                            <th>śr</th>
+                            <th>czw</th>
+                            <th>pt</th>
+                            <th>sb</th>
+                            <th>ndz</th>
+                        </tr>
+                        <tr>
+                            <td>od</td>
+                            <td>do</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 5px">11.12.22</td>
+                            <td style="padding: 5px 5px">11.03.23</td>
+                            <% if (connection.serviceDays === undefined) { %>
+                                <td style="background-color: var(--modal-red)"></td>
+                                <td style="background-color: var(--modal-red)"></td>
+                                <td style="background-color: var(--modal-red)"></td>
+                                <td style="background-color: var(--modal-red)"></td>
+                                <td style="background-color: var(--modal-red)"></td>
+                                <td style="background-color: var(--modal-red)"></td>
+                                <td style="background-color: var(--modal-red)"></td>
+                            <% } %>
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "1")) { %>
+                                    <td style="background-color: var(--modal-green)"></td>
+                                <% } else { %>
+                                    <td style="background-color: var(--modal-red)"></td>
+                                <% } %>
+                            <% } %>
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "2")) { %>
+                                    <td style="background-color: var(--modal-green)"></td>
+                                <% } else { %>
+                                    <td style="background-color: var(--modal-red)"></td>
+                                <% } %>
+                            <% } %>
+
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "3")) { %>
+                                    <td style="background-color: var(--modal-green)"></td>
+                                <% } else { %>
+                                    <td style="background-color: var(--modal-red)"></td>
+                                <% } %>
+                            <% } %>
+
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "4")) { %>
+                                    <td style="background-color: var(--modal-green)"></td>
+                                <% } else { %>
+                                    <td style="background-color: var(--modal-red)"></td>
+                                <% } %>
+                            <% } %>
+
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "5")) { %>
+                                    <td style="background-color: var(--modal-green)"></td>
+                                <% } else { %>
+                                    <td style="background-color: var(--modal-red)"></td>
+                                <% } %>
+                            <% } %>
+
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "6")) { %>
+                                    <td style="background-color: var(--modal-green)"></td>
+                                <% } else { %>
+                                    <td style="background-color: var(--modal-red)"></td>
+                                <% } %>
+                            <% } %>
+
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "7")) { %>
+                                    <td style="background-color: var(--modal-green)"></td>
+                                <% } else { %>
+                                    <td style="background-color: var(--modal-red)"></td>
+                                <% } %>
+                            <% } %>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 5px">12.03.22</td>
+                            <td style="padding: 5px 5px">10.06.23</td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 5px">11.06.23</td>
+                            <td style="padding: 5px 5px">02.09.23</td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 5px">03.09.23</td>
+                            <td style="padding: 5px 5px">11.11.23</td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 5px">12.11.23</td>
+                            <td style="padding: 5px 5px">09.12.23</td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                            <td style="background-color: var(--modal-red)"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="oos">
+                    nie kursuje: &emsp14; 
+                    <% if (connection.outOfServiceDays) { %>
+                        <%= connection.outOfServiceDays %>
+                    <% } else { %>
+                        brak odwołanych kursów
+                    <% } %>
+                </div>
+
+                <div class="add-info">
+                    <i>wszystkie pola oznaczone kolorem czerwonym wskazują na brak wprowadzonych danych dla <br><b>wprowadzonego okresu</b></i>
+                </div>
+            </div>
+        </div>
+        
+    </div>  
+
+    <br>
+    <div class="footer">
+        <div>ostatnia aktualizacja: 15.02.2023</div>
+        <div>copyright © 2023</div>
+    </div>
+
+    <script>
+        
+    </script>
+</body>
+</html>

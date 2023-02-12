@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carrier database API</title>
+    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body id="main-wrapper">
+    <div class="go-back">
+        <form method="POST" action="/connections/details">
+            <input type="hidden" name="c_id" value="<%= connection.c_id %>">
+            <button type="submit">powrót</button>
+        </form>
+    </div>
+
+    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    
+    <% if (connection.copy == "true") { %>
+        <h6>edytuj skopiowane połączenie<span style="font-size: 0.3rem; font-weight:200"> &emsp14;<i> c_id: <%= connection.c_id %></i></span></h6>
+    <% } else { %>
+        <h6>edytuj istniejące połączenie<span style="font-size: 0.3rem; font-weight:200"> &emsp14;<i> c_id: <%= connection.c_id %></i></span></h6>
+    <% } %>
+    <br>
+    
+    <div class="connection-wrapper">
+        <form class="create-connection" id="create-connection" method="POST" action="/connections" autocomplete="off">
+            <input type="hidden" name="copy" value="<%= connection.copy %>" />
+            <div id="origin">
+                <input type="search" list="stations" class="select-input" id="station-search-0" name="origin" placeholder="początek trasy" onchange="resetIfInvalid(this)" 
+                value="<%= connection.origin %>" required>
+                <datalist id="stations">
+                    <% stationsList.forEach(station => { %> 
+                    <option value="<%= station.name %>"> <%= station.s_id + " --- " + station.name %> </option>
+                    <% }) %>
+                </datalist>
+                <div id="departure-date" style="margin-top: 10px;">
+                    <label>godzina odjazdu</label>
+                    <input type="time" class="time-connection" id="time0" name="departure" value="<%= connection.departure %>" required><br>
+                    <label>peron | tor&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&nbsp;
+                        <input type="text" class="platform-track-connection" id="platform0" name="departurePlatform" maxlength="5" value="<%= connection.departurePlatform %>" required> /
+                        <input type="text" class="platform-track-connection" id="track0" style="margin-left: 0; width: 49px" name="departureTrack" maxlength="5" value="<%= connection.departureTrack %>" >
+                    </label>
+                </div>
+            </div>
+
+            <div id="destination">
+                <input type="search" list="stations" class="select-input" id="station-search-0" name="destination" value="<%= connection.destination %>" placeholder="koniec trasy" required>
+                <datalist id="stations">
+                    <% stationsList.forEach(station => { %> 
+                    <option value="<%= station.name %>"> <%= station.s_id + " --- " + station.name %> </option>
+                    <% }) %>
+                </datalist>
+                <div id="arrival-date" style="margin-top: 10px;">
+                    <label>godzina przyjazdu</label>
+                    <input type="time" class="time-connection" id="time1" name="arrival" value="<%= connection.arrival %>" required><br>
+                    <label>peron | tor&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&nbsp;&nbsp;&nbsp;
+                        <input type="text" class="platform-track-connection" id="platform1" name="arrivalPlatform" maxlength="5" value="<%= connection.arrivalPlatform %>" required>   /
+                        <input type="text" class="platform-track-connection" id="track1" style="margin-left: 0; width: 49px" name="arrivalTrack" maxlength="5" value="<%= connection.arrivalTrack %>" >
+                    </label>
+                </div>
+            </div>
+
+            <div class="update-select-service" style="margin-left: 0">
+                <span style="display: inline">
+                    
+                    <% if (connection.copy == "false") { %>
+                        <select class="select-input service-connection" id="service0" name="service" style="width: 180px" disabled >
+                            <option value="<%= connection.service %>" selected><%= connection.service %> *</option>
+            
+                            <% if ("EIP" != connection.service) { %>
+                                <option value="EIP">EIP</option>
+                            <% } %>
+                            <% if ("EIC" != connection.service) { %>
+                                <option value="EIC">EIC</option>
+                            <% } %>
+                            <% if ("IC" != connection.service) { %>
+                                <option value="IC">IC</option>
+                            <% } %>
+                            <% if ("TLK" != connection.service) { %>
+                                <option value="TLK">TLK</option>
+                            <% } %>
+                            <% if ("ZKA" != connection.service) { %>
+                                <option value="ZKA">ZKA</option>
+                            <% } %>
+                        </select>
+                        <input type="hidden" id="service1" name="service" value="<%= connection.service %>" >
+                    <% } else { %>
+                        <select class="select-input service-connection" id="service0" name="service" style="width: 180px" >
+                            <option value="<%= connection.service %>" selected><%= connection.service %> *</option>
+            
+                            <% if ("EIP" != connection.service) { %>
+                                <option value="EIP">EIP</option>
+                            <% } %>
+                            <% if ("EIC" != connection.service) { %>
+                                <option value="EIC">EIC</option>
+                            <% } %>
+                            <% if ("IC" != connection.service) { %>
+                                <option value="IC">IC</option>
+                            <% } %>
+                            <% if ("TLK" != connection.service) { %>
+                                <option value="TLK">TLK</option>
+                            <% } %>
+                            <% if ("ZKA" != connection.service) { %>
+                                <option value="ZKA">ZKA</option>
+                            <% } %>
+                        </select>
+                    <% } %>
+                        
+                        
+                    </select>
+                    <span>
+                        <input type="checkbox" value="EZT" name="serviceEZT" style="margin: 0"
+                        <% if (connection.serviceEZT == "EZT") { %>
+                            checked
+                        <% } %>
+                        >
+                        <span style="font-size: 0.5rem">EZT</span><span style="font-size: 0.20rem"><i>IKONY INFORMACYJNE</i></span>
+                    </span>
+                </span><br>
+                    
+                    <% if (connection.copy == "false") { %>
+                        <input type="hidden" id="service1" name="serviceNumber" value="<%= connection.serviceNumber %>" >
+                        <input type="text" class="service-text-connection" style="width: 180px; opacity: 0.7" placeholder="<%= connection.serviceNumber %>" value="<%= connection.serviceNumber %>" disabled required>
+                    <% } else { %>
+                        <input type="text" class="service-text-connection" id="service1" name="serviceNumber" style="width: 180px" placeholder="nr pociągu" value="<%= connection.serviceNumber %>" required>
+                    <% } %>
+
+                    <% if (connection.serviceSpecialNumber !== undefined) { %>
+                        <input type="text" class="service-text-connection" id="service1" name="serviceSpecialNumber" style="margin-left: 0; width: 130px" placeholder="(opc) UIC" value="<%=connection.serviceSpecialNumber%>">
+                    <% } else { %>
+                        <input type="text" class="service-text-connection" id="service1" name="serviceSpecialNumber" style="margin-left: 0; width: 130px" placeholder="(opc) UIC" value="">
+                    <% } %>
+                    <input type="text" class="service-text-connection" id="service2" name="serviceName"  style="width: 320px" placeholder="(opc) nazwa" value="<%= connection.serviceName %>">
+                </span>
+            </div>
+
+            <div id="via-entries">
+                <div id="single-via">
+                    <% for(var i = 0; i < 40; i++ ) { %>
+                        <span>
+                            <input type="search" list="stations" class="select-input" id="station-via-<%= i %>" name="via<%= i %>" placeholder="wybierz stację pośrednią (<%= i %>)"
+                                   value="<%= connection.viaStations[i] %>">
+                            <datalist id="stations">
+                                <% stationsList.forEach(station => { %> 
+                                <option value="<%= station.name %>"> <%= station.s_id + " --- " + station.name %> </option>
+                                <% }) %>
+                            </datalist>
+                            &nbsp;<input type="time" class="time-connection time-via" id="station-via-Atime<%= i %>" name="viaATime<%= i %>" value="<%= connection.viaArrivalTime[i] %>">
+                            &nbsp;<input type="time" class="time-connection time-via" id="station-via-time<%= i %>" name="viaTime<%= i %>" value="<%= connection.viaDepartureTime[i] %>">
+                            &nbsp;<input type="text" class="platform-track-connection" id="platform<%= i %>" name="viaP<%= i %>" 
+                                         style="margin: 0; height: 28px; width: 50px; font-size: 0.4rem" maxlength="6" placeholder="p / tor"
+                                         value="<%= connection.viaPlatform[i] %>">
+                        </span>
+                    <% } %><br>
+                </div>
+            </div>
+
+            <div class="day-input-without-cal" id="service-days">
+                <label><b>kursowanie - dni tygodnia</b></label><br>
+                <fieldset class="weekday-select" data-name="serviceDays" id="days">
+                    <div class="days">
+                        <label>
+                            <input type="checkbox" value="1" name="days"
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "1")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > Poniedziałek
+                        </label>
+                        <label>
+                            <input type="checkbox" value="2" name="days"
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "2")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > Wtorek
+                        </label>
+                        <label>
+                            <input type="checkbox" value="3" name="days"
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "3")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > Środa
+                        </label>
+                        <label>
+                            <input type="checkbox" value="4" name="days"
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "4")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > Czwartek
+                        </label>
+                        <label>
+                            <input type="checkbox" value="5" name="days"
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "5")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > Piątek
+                        </label>
+                        <label>
+                            <input type="checkbox" value="6" name="days"
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "6")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > Sobota
+                        </label>
+                        <label>
+                            <input type="checkbox" value="7" name="days"
+                            <% if (connection.serviceDays !== undefined) { %>
+                                <% if (connection.serviceDays.find(el => el == "7")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > Niedziela
+                        </label>
+                    </div>
+                </fieldset>
+  
+            </div>
+
+            <div class="day-input-without-cal" id="out-of-service-days">
+                <label><b>kursowanie - brak kursu</b></label><br>
+                <textarea name="outOfServiceDays" form="create-connection"><%= connection.outOfServiceDays %></textarea>
+                <span>< dd.mm, dd.mm | dd.mm-dd.mm ></span>
+                
+            </div>
+
+            <div class="day-input-without-cal" id="amenities">
+                <label><b>udogodnienia - cechy specjalne</b></label><br>
+                <fieldset class="amenities-select" data-name="amenities" id="amenities">
+                    <div class="amenities">
+                        <label>
+                            <input type="checkbox" value="UWAGA! brak możliwości zakupu biletu u konduktora" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "UWAGA! brak możliwości zakupu biletu u konduktora")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > brak możliwości zakupu biletu u konduktora
+                        </label>
+                        <label>
+                            <input type="checkbox" value="wagon gastronomiczny" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "wagon gastronomiczny")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > wagon gastronomiczny
+                        </label>
+                        <label>
+                            <input type="checkbox" value="sprzedaż napojów i przekąsek z wózka minibar (na wybranych odcinkach)" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "sprzedaż napojów i przekąsek z wózka minibar (na wybranych odcinkach)")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > sprzedaż napojów i przekąsek z wózka minibar (na wybranych odcinkach)
+                        </label>
+                        <label>
+                            <input type="checkbox" value="wagon z miejscami do leżenia" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "wagon z miejscami do leżenia")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > wagon z miejscami do leżenia
+                        </label>
+                        <label>
+                            <input type="checkbox" value="wagon sypialny" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "wagon sypialny")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > wagon sypialny
+                        </label>
+                        <label>
+                            <input type="checkbox" value="przewóz rowerów - l. miejsc ograniczona" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "przewóz rowerów - l. miejsc ograniczona")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > przewóz rowerów - l. miejsc ograniczona
+                        </label>
+                        <label>
+                            <input type="checkbox" value="rezerwacja miejsc" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "rezerwacja miejsc")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > rezerwacja miejsc
+                        </label>
+                        <label>
+                            <input type="checkbox" value="klimatyzacja" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "klimatyzacja")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > klimatyzacja
+                        </label>
+                        <label>
+                            <input type="checkbox" value="wagon rodzinny z przedziałem dla dzieci" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "wagon rodzinny z przedziałem dla dzieci")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > wagon rodzinny z przedziałem dla dzieci
+                        </label>
+                        <label>
+                            <input type="checkbox" value="wagon dla osób niepełnosprawnych z platformą" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "wagon dla osób niepełnosprawnych z platformą")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > wagon dla osób niepełnosprawnych z platformą
+                        </label>
+                        <label>
+                            <input type="checkbox" value="miejsca dla osób z dziećmi do lat 6" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "miejsca dla osób z dziećmi do lat 6")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > miejsca dla osób z dziećmi do lat 6
+                        </label>
+                        <label>
+                            <input type="checkbox" value="przewóz przesyłek konduktorskich" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "przewóz przesyłek konduktorskich")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > przewóz przesyłek konduktorskich
+                        </label>
+                        <label>
+                            <input type="checkbox" value="wagon z oznaczeniami w alfabecie Braille`a" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "wagon z oznaczeniami w alfabecie Braille`a")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > wagon z oznaczeniami w alfabecie Braille`a
+                        </label>
+                        <label>
+                            <input type="checkbox" value="tylko 2 kl." name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "tylko 2 kl.")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > tylko 2 kl.
+                        </label>
+                        <label>
+                            <input type="checkbox" value="pociąg z elektrycznych zespołów trakcyjnych (EZT)" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "pociąg z elektrycznych zespołów trakcyjnych (EZT)")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > pociąg zestawiony z elektrycznych zespołów trakcyjnych (EZT)
+                        </label>
+                        <label>
+                            <input type="checkbox" value="Wifi" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "Wifi")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > Wifi
+                        </label>
+                        <label>
+                            <input type="checkbox" value="wydzielona Strefa Ciszy" name="amenities"
+                            <% if (connection.amenities !== undefined) { %>
+                                <% if (connection.amenities.find(el => el == "wydzielona Strefa Ciszy")) { %>
+                                    checked
+                                <% } %>
+                            <% } %>
+                            > wydzielona Strefa Ciszy
+                        </label>
+                    </div>
+                </fieldset>
+  
+            </div>
+
+            <div class="day-input-without-cal" id="przydzial">
+                <label><b>przydział składu</b></label><br>
+                <input type="text" class="select-input" style="width: 100px; font-size: 0.25rem" name="old_c_id" value="<%= connection.c_id %>" disabled /><br>
+            </div>
+            
+            <div style="display: grid; place-content: end">
+                <input type="submit" class="accept-button" style="margin-right: 20px" value="zapisz" />
+            </div>
+        </form>
+
+    </div>
+
+    <div style="height: 80px"></div>
+
+    <script>
+
+        // https://schinckel.net/2016/08/17/weekday-multi-select-widget/
+        // Weekday Multi-Select Widget
+ 
+        function isChecked(element) {
+            return element.checked;
+        }
+        
+        function getValue(element) {
+            return element.value;
+        }
+        
+        function weekdayWidget(element) {
+            var parts = Array.apply(null, element.querySelectorAll('.week-parts [type=checkbox]'));
+            var days = Array.apply(null, element.querySelectorAll('.days [type=checkbox]'));
+        
+            function value() {
+                return days.filter(isChecked).map(getValue);
+            }
+        
+            this.value = value;
+        
+            function updateParts(selected) {
+        
+                function notSelected(val) {
+                    return selected.indexOf(val) === -1;
+                }
+        
+                parts.forEach(function(part) {
+                    var partDays = part.dataset.values.split(',');
+                    var notSelectedParts = partDays.filter(notSelected);
+
+                    if (notSelectedParts.length === 0) {
+                        part.checked = true;
+                        part.indeterminate = false;
+                    } else if (notSelectedParts.length === partDays.length) {
+                        part.checked = false;
+                        part.indeterminate = false;
+                    } else {
+                        part.indeterminate = true;
+                    }
+                    
+                });
+            }
+        
+            function updateDays(values, checked) {
+                days.forEach(function(ele) {
+                    if (values.indexOf(ele.value) > -1) {
+                        ele.checked = checked;
+                    }
+                });
+            }
+        
+            element.addEventListener('change', function(event) {
+                if (event.target.tagName === 'INPUT') {
+                    if (event.target.name === element.dataset.name) {
+                        updateParts(value());
+                    } else {
+                        updateDays(event.target.dataset.values.split(','), event.target.checked);
+                        updateParts(value());
+                    }
+                }
+            });
+        }
+
+        var widget = new weekdayWidget(document.getElementById('days'));
+
+    </script>
+
+</body>
+</html>
