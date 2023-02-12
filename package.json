@@ -1,7 +1,7 @@
 {
-  "name": "intercity-project",
-  "version": "0.1.0",
-  "description": "description lacking - intercity project",
+  "name": "carrier-api-service",
+  "version": "1.0.0",
+  "description": "description lacking - carrier-api-service",
   "main": "index.js",
   "scripts": {
     "start": "node server",
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/krisior/intercity-project.git"
+    "url": "git+https://github.com/krisior/carrier-api-service.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/krisior/intercity-project/issues"
+    "url": "https://github.com/krisior/carrier-api-service/issues"
   },
-  "homepage": "https://github.com/krisior/intercity-project#readme",
+  "homepage": "https://github.com/krisior/carrier-api-service#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
