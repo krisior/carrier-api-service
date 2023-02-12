@@ -16,6 +16,9 @@ const connectDB = require('./config/databaseConnection')
 const mongoose = require('mongoose')
 const { urlencoded } = require('express')
 
+const compression = require("compression");
+const helmet = require("helmet");
+
 connectDB()
 
 app.engine('html', require('ejs').renderFile);
@@ -26,6 +29,12 @@ app.use(express.json())
 app.use(urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(CORS(corsOptions))
+
+// compress the HTTP response sent back to a client, significantly reduce the time required for the client to get and load the page
+app.use(compression());
+
+// set appropriate HTTP headers that help protect your app from well-known web vulnerabilities
+app.use(helmet()); 
 
 app.use(express.static('public'))
 
