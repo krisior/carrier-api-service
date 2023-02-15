@@ -5,12 +5,12 @@ popupConfirmationButton.addEventListener("click", () => {
     return
 })
 
-// @ /stations
+// @ /users
 
-const searchInputUsers = document.getElementById("search-input-stations")
+const searchInputUsers = document.getElementById("search-input-users")
 
 const searchThroughUsers = () => {
-    const table = document.getElementById("stations-list")
+    const table = document.getElementById("users-list")
     const tr = table.getElementsByTagName("tr")
 
     const filter = searchInputUsers.value.toUpperCase()
