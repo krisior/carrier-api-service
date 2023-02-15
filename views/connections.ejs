@@ -1,49 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>carrier database API</title>
-    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="/css/101996-api.css" />
+    <link rel="stylesheet" href="/css/101997-crt-upd.css" />
+    <link rel="stylesheet" href="/css/103998-tab.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body id="main-wrapper"
-    style = <% if (openPopUp) { %> 
-        "overflow-y: hidden" 
+    <% if (openPopUp) { %> 
+        style = "overflow-y: hidden" 
     <% } else { %>
-        "overflow-y: auto"
+        style = "overflow-y: auto"
     <% } %>
 >
     <div class="go-back">
         <a href="/"><p>powrót</p></a>
     </div>
 
-    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    <h1>API bazy danych <i class="carrier-adnotation">przewoźnik</i></h1>
     <h6>dane połączeń</h6>
     <br>
 
     <div class="popup-created" 
-        style = <% if (openPopUp) { %> 
-                    "display: grid" 
-                <% } else { %>
-                    "display: none"
-                <% } %>
+        <% if (openPopUp) { %> 
+            style = "display: grid" 
+        <% } else { %>
+            style = "display: none"
+        <% } %>
     >
         <div class="inner">
             <span class="message-box"><%= message %></span>&emsp14;&emsp14;
-            <span class="confirm-close-popup"><a href="/connections"><button onclick="window.location.reload()">OK</button></a></span>
+            <span class="confirm-close-popup"><a href="/connections"><button id="reload-after-pop-up">OK</button></a></span>
         </div>
         <br>
     </div>
     
     <div class="search-create-wrapper">
         <span class="search-box">
-            <input type="text" id="search-input" onkeyup="searchThroughTable()" placeholder="nr pociągu / nazwa pociągu">
+            <input type="text" id="search-input-connections" placeholder="nr pociągu / nazwa pociągu">
         </span>
         <span class="create-station-box">
             <a href="/create-connection"><button>nowe połączenie</button></a> &emsp14; 
-            <a href="/update-connection-system"><button class="" style="background-color: var(--font-search-color)">modyfikuj systemowe dane połączeń<br>
+            <a href="/update-connection-system"><button style="background-color: var(--font-search-color)">modyfikuj systemowe dane połączeń<br>
                 <span style="font-size: 0.4rem"><i>panel administratora</i>
                 </button>
             </a>
@@ -194,31 +196,7 @@
         <div>copyright © 2023</div>
     </div>
 
-    <script>
-        const searchThroughTable = () => {
-            const input = document.getElementById("search-input")
-            const table = document.getElementById("connections-list")
-            const tr = table.getElementsByTagName("tr")
+    <script type="text/javascript" src="/script/20110-connections.js" ></script>
 
-            const filter = input.value.toUpperCase()
-        
-            for (var i = 0; i < tr.length; i++) {
-                const td0 = tr[i].getElementsByTagName("td")[1] // number
-                const td1 = tr[i].getElementsByTagName("td")[2] // name
-            
-                if (td0 && td1) {
-                    const txtValue0 = td0.textContent || td0.innerText
-                    const txtValue1 = td1.textContent || td1.innerText
-                    if (txtValue0.toUpperCase().indexOf(filter) > -1 ||
-                        txtValue1.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = ""
-                    } else {
-                        tr[i].style.display = "none"
-                    }
-                }
-            }
-        }
-
-    </script>
 </body>
 </html>

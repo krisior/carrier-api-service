@@ -1,0 +1,124 @@
+/* @ /details */
+
+.details-title {
+    color: var(--font-search-color);
+    font-size: 0.5rem;
+    line-height: 30px;
+}
+
+.origin-destination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.main-detail img {
+    height: 20px;
+    width: 650px;
+
+    /* https://codepen.io/sosuke/pen/Pjoqqp */
+    filter: invert(58%) sepia(54%) saturate(5317%) hue-rotate(156deg) brightness(102%) contrast(101%);
+
+    scale: 1.25;
+    user-select: none;
+    z-index: -1;
+}
+
+.detail-station {
+    font-size: 0.8rem;
+    font-weight: 500;
+
+    color: var(--font-search-color);
+    margin: 0 40px;
+    text-align: right;
+
+    line-height: 35px;
+}
+
+.additional-detail {
+    display: grid;
+
+    color: var(--font-search-color);
+    font-size: 0.6rem;
+}
+
+.additional-detail-table {
+    min-width: 1000px;
+    text-align: center;
+    font-size: 0.45rem;
+    line-height: 10px;
+}
+
+.additional-detail-table tr:nth-child(odd) {
+    background: rgba(221, 221, 221, 0.3)
+}
+
+.additional-detail-table tr:nth-child(even):hover {
+    background: rgba(221, 221, 221, 0.3)
+}
+
+.additional-detail-table img {
+    height: 30px;
+    width: 50px;
+ 
+    user-select: none;
+}
+
+.active-track-icon {
+    /* https://codepen.io/sosuke/pen/Pjoqqp */
+    filter: invert(16%) sepia(83%) saturate(2758%) hue-rotate(347deg) brightness(88%) contrast(91%);
+}
+
+.inactive-track-icon {
+    /* https://codepen.io/sosuke/pen/Pjoqqp */
+    filter: invert(58%) sepia(54%) saturate(5317%) hue-rotate(156deg) brightness(102%) contrast(101%);
+}
+
+.special-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.amenities-information {
+    font-size: 0.4rem;
+    line-height: 24px;
+    margin: 10px 10px;
+}
+
+.amenities-information > div:hover {
+    color: var(--font-color-light);
+    transition: 0.1s ease-in-out;
+}
+
+.days-info-table {
+    table-layout: fixed;
+
+    width: 550px;
+    text-align: center;
+    font-size: 0.45rem;
+    line-height: 20px;
+}
+
+.days-info-table td {
+    font-size: 0.4rem;
+    height: 15px;
+    letter-spacing: 1px;
+}
+
+.days-info-table th {
+    padding-bottom: 5px;
+}
+
+.add-info {
+    font-size: 0.3rem;
+    line-height: 12px;
+    margin: 10px 0 0 10px;
+    text-align: start;
+}
+
+.oos {
+    font-size: 0.4rem;
+    line-height: 24px;
+    margin: 10px 10px;
+}

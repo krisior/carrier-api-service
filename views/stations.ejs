@@ -1,45 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>carrier database API</title>
-    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="/css/101996-api.css" />
+    <link rel="stylesheet" href="/css/101997-crt-upd.css" />
+    <link rel="stylesheet" href="/css/102871-det.css" />
+    <link rel="stylesheet" href="/css/103998-tab.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body id="main-wrapper"
-    style = <% if (openPopUp) { %> 
-        "overflow-y: hidden" 
+    <% if (openPopUp) { %> 
+        style = "overflow-y: hidden" 
     <% } else { %>
-        "overflow-y: auto"
+        style = "overflow-y: auto"
     <% } %>
 >
     <div class="go-back">
         <a href="/"><p>powrót</p></a>
     </div>
 
-    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    <h1>API bazy danych <i class="carrier-adnotation">przewoźnik</i></h1>
     <h6>dane stacyjne</h6>
     <br>
 
     <div class="popup-created" 
-        style = <% if (openPopUp) { %> 
-                    "display: grid" 
-                <% } else { %>
-                    "display: none"
-                <% } %>
+        <% if (openPopUp) { %> 
+            style = "display: grid" 
+        <% } else { %>
+            style = "display: none"
+        <% } %>
     >
         <div class="inner">
             <span class="message-box"><%= message %></span>&emsp14;&emsp14;&emsp14;
-            <span class="confirm-close-popup"><a href="/stations"><button onclick="window.location.reload()">OK</button></a></span>
+            <span class="confirm-close-popup"><a href="/stations"><button id="reload-after-pop-up">OK</button></a></span>
         </div>
         <br>
     </div>
     
     <div class="search-create-wrapper">
         <span class="search-box">
-            <input type="text" id="search-input" onkeyup="searchThroughTable()" placeholder="nazwa stacji / identyfikator stacji">
+            <input type="text" id="search-input-stations" placeholder="nazwa stacji / identyfikator stacji">
         </span>
         <span class="create-station-box">
             <a href="/create-station"><button>nowa stacja</button></a>&emsp14;
@@ -66,13 +69,10 @@
 
             <% stationsList.forEach(station => { %>
                 <tr class="list-row">
-                    <td class="list-update-hover" 
-                        style="color: var(--font-color); text-align: center; padding: 0; letter-spacing: 2px; font-weight: 500">
-                        <%= station.s_id %> 
-                    </td>
-                    <td class="list-update-hover"><%= station.name %> </td>
-                    <td class="list-update-hover"><%= station.upper %> </td>
-                    <td class="list-update-hover" style="text-align: center; padding: 0; font-size: 0.3rem"><%= station.weight %></td>
+                    <td class="list-update-hover id-congr"><%= station.s_id %></td>
+                    <td class="list-update-hover"><%= station.name %></td>
+                    <td class="list-update-hover"><%= station.upper %></td>
+                    <td class="list-update-hover weight-congr"><%= station.weight %></td>
                     <td class="list-icons" style="padding-left: 0">
                         <span>
                             <form method="POST" action="/stations">
@@ -93,31 +93,7 @@
         <div>copyright © 2023</div>
     </div>
 
-    <script>
-        const searchThroughTable = () => {
-            const input = document.getElementById("search-input")
-            const table = document.getElementById("stations-list")
-            const tr = table.getElementsByTagName("tr")
+    <script type="text/javascript" src="/script/20123-stations.js" ></script>
 
-            const filter = input.value.toUpperCase()
-        
-            for (var i = 0; i < tr.length; i++) {
-                const td0 = tr[i].getElementsByTagName("td")[0] // id
-                const td1 = tr[i].getElementsByTagName("td")[1] // name
-            
-                if (td0 && td1) {
-                    const txtValue0 = td0.textContent || td0.innerText
-                    const txtValue1 = td1.textContent || td1.innerText
-                    if (txtValue0.toUpperCase().indexOf(filter) > -1 ||
-                        txtValue1.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = ""
-                    } else {
-                        tr[i].style.display = "none"
-                    }
-                }
-            }
-        }
-
-    </script>
 </body>
 </html>

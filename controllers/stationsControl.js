@@ -101,9 +101,9 @@ const updateStation = asyncHandler(async (req, res) => {
         return
     }
 
-    const station = await Station.findOne({ s_id }).lean().exec()
+    const stationCheck = await Station.findOne({ s_id }).lean().exec()
 
-    if (!station) {
+    if (!stationCheck) {
         res.render('stations.ejs', {
             openPopUp: true,
             message: 'nie znaleziono stacji',
@@ -111,6 +111,8 @@ const updateStation = asyncHandler(async (req, res) => {
         })
         return
     }
+
+    var station = await Station.findOne({ s_id }).exec()
 
     // creating additional names
     const upperName = String(name).normalize("NFD").replace(/\p{Diacritic}/gu, "").replace(/\u0142/g, "l").replace(/\u0141/g, "L").toUpperCase()

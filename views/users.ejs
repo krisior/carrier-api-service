@@ -1,46 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>carrier database API</title>
-    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="/css/101996-api.css" />
+    <link rel="stylesheet" href="/css/101997-crt-upd.css" />
+    <link rel="stylesheet" href="/css/102871-det.css" />
+    <link rel="stylesheet" href="/css/103998-tab.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body id="main-wrapper"
-    style = <% if (openPopUp) { %> 
-        "overflow-y: hidden" 
+    <% if (openPopUp) { %> 
+        style = "overflow-y: hidden" 
     <% } else { %>
-        "overflow-y: auto"
+        style = "overflow-y: auto"
     <% } %>
 >
     <div class="go-back">
         <a href="/"><p>powrót</p></a>
     </div>
 
-    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    <h1>API bazy danych <i class="carrier-adnotation">przewoźnik</i></h1>
     <h6>użytkownicy</h6>
     <br>
 
     <div class="popup-created" 
-        style = <% if (openPopUp) { %> 
-                    "display: grid" 
-                <% } else { %>
-                    "display: none"
-                <% } %>
+        <% if (openPopUp) { %> 
+            style = "display: grid" 
+        <% } else { %>
+            style = "display: none"
+        <% } %>
     >
         <div class="inner">
             <span class="message-box"><%= message %></span>&emsp14;&emsp14;&emsp14;
-            <span class="confirm-close-popup"><a href="/users"><button onclick="window.location.reload()">OK</button></a></span>
+            <span class="confirm-close-popup"><a href="/users"><button id="reload-after-pop-up">OK</button></a></span>
         </div>
         <br>
     </div>
 
     <div class="search-create-wrapper">
         <span class="search-box" style="width: 40%">            
-            <input type="text" id="search-input"
-            onkeyup="searchThroughTable()" placeholder="nazwa użytkownika">
+            <input type="text" id="search-input-users" placeholder="nazwa użytkownika">
         </span>
         <span class="create-station-box">
             <a href="/create-user"><button>nowy użytkownik</button></a>&emsp14;
@@ -62,21 +64,13 @@
 
             <% usersList.forEach(user => { %>
                 <tr class="list-row">
-                    <td class="list-update-hover"
-                        style= <% if (user.active) { %> 
-                                    "background-color: rgb(19, 148, 41, 0.2)"> 
-                                <% } else { %>
-                                    "background-color: rgb(148, 19, 19, 0.2)"> 
-                                <% } %>
-                                <%= user.username %> 
-                    </td>
-                    <td class="list-update-hover" 
-                        style="color: #ffffff; font-size: 0.3rem; <% if (user.active) { %> 
-                                                                        background-color: var(--modal-green)"> zalogowany 
-                                                                    <% } else { %>
-                                                                        background-color: var(--modal-red)"> niezalogowany 
-                                                                    <% } %>
-                    </td>
+                    <% if (user.active) { %> 
+                        <td class="list-update-hover" style="background-color: rgb(19, 148, 41, 0.2)" > <%= user.username %> </td>
+                        <td class="list-update-hover" style="color: #ffffff; font-size: 0.3rem; background-color: var(--modal-green)"> zalogowany </td>
+                    <% } else { %>
+                        <td class="list-update-hover" style="background-color: rgb(148, 19, 19, 0.2)" > <%= user.username %> </td>
+                        <td class="list-update-hover" style="color: #ffffff; font-size: 0.3rem; background-color: var(--modal-red)"> niezalogowany </td>
+                    <% } %> 
                     <td class="list-icons">
                         <span>
                             <form method="POST" action="/users">
@@ -96,28 +90,5 @@
         <div>ostatnia aktualizacja: 15.02.2023</div>
         <div>copyright © 2023</div>
     </div>
-
-    <script>
-        const searchThroughTable = () => {
-            const input = document.getElementById("search-input")
-            const table = document.getElementById("users-list")
-            const tr = table.getElementsByTagName("tr")
-            const filter = input.value.toUpperCase()
-        
-            for (var i = 0; i < tr.length; i++) {
-                const td = tr[i].getElementsByTagName("td")[0]
-            
-                if (td) {
-                    const txtValue = td.textContent || td.innerText
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = ""
-                    } else {
-                        tr[i].style.display = "none"
-                    }
-                }
-            }
-        }
-
-    </script>
 </body>
 </html>

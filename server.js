@@ -10,14 +10,13 @@ const { logger, logEvents } = require('./middleware/loggerCompound')
 const errorHandler = require('./middleware/errorHandler')
 const cookieParser = require('cookie-parser')
 const CORS = require('cors')
-const corsOptions = require('./config/corsOptions')
 
-const connectDB = require('./config/databaseConnection')
+const connectDB = require('./config/connection')
 const mongoose = require('mongoose')
 const { urlencoded } = require('express')
 
-const compression = require("compression");
-const helmet = require("helmet");
+const compression = require('compression');
+const helmet = require('helmet');
 
 connectDB()
 
@@ -28,13 +27,13 @@ app.use(logger)
 app.use(express.json())
 app.use(urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(CORS(corsOptions))
 
 // compress the HTTP response sent back to a client, significantly reduce the time required for the client to get and load the page
-app.use(compression());
+app.use(compression())
 
 // set appropriate HTTP headers that help protect your app from well-known web vulnerabilities
-// app.use(helmet()); 
+app.use(helmet())
+app.use(CORS())
 
 app.use(express.static('public'))
 
@@ -58,7 +57,7 @@ app.use('/delete-connection', require('./routes/deleteConnection'))
 app.use('/connections/details', require('./routes/details'))
 
 app.all('*', (req, res) => {
-    res.status(404)
+    // res.status(404)
     if (req.accepts('html')) {
         res.render('404.ejs')
     } else if (req.accepts('json')) {
@@ -71,12 +70,12 @@ app.all('*', (req, res) => {
 app.use(errorHandler)
 
 mongoose.connection.once('open', () => {
-    console.log('Connected to MongoDB')
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+    console.log('connected to MongoDB')
+    app.listen(PORT, () => console.log(`server running on port ${PORT}`))
 })
 
 mongoose.connection.on('error', err => {
     console.log(err)
-    logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, 'mongoErrLog.log')
+    logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, 'errorlogMGDB.log')
 })
 

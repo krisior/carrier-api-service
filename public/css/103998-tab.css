@@ -1,0 +1,154 @@
+
+/* @ /stations */
+
+.list {
+    width: 100%;
+    border-collapse: collapse;
+
+    font-size: 0.5rem;
+    
+    overflow: visible;
+    color: var(--font-search-color);
+}
+
+.list th {
+    font-weight: 600;
+}
+
+.list td {
+    padding-left: 10px;
+}
+
+.list tr {
+    height: 30px;
+}
+
+.list tr:hover {
+    cursor: text;
+    background-color: rgba(11, 11, 11, 0.05);
+    transition: 0.1s linear;
+}
+
+.list-icons {
+    text-align: center;
+    align-items: right;
+}
+
+.list-icons button {
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.list i { 
+    cursor: pointer;
+    opacity: 0.25;
+    transition: 0.1s linear;
+}
+
+.list i:hover {
+    opacity: 1;
+    color: var(--font-color-light);
+}
+
+.list tr:nth-child(odd) {
+    background: rgba(221, 221, 221, 0.3)
+}
+
+.list tr:nth-child(even):hover {
+    background: rgba(221, 221, 221, 0.3)
+}
+
+.list .id-congr {
+    color: var(--font-color); 
+    text-align: center; 
+    padding: 0; 
+    letter-spacing: 2px; 
+    font-weight: 500;
+}
+
+.list .weight-congr {
+    text-align: center; 
+    padding: 0; 
+    font-size: 0.3rem
+}
+
+.users tr {
+    height: 35px;
+}
+
+.users td {
+    padding: 0;
+    text-align: center;
+}
+
+
+/* @ /connections */
+
+.connections-list {
+    width: 100%;
+    border-collapse: collapse;
+
+    font-size: 0.4rem;
+    color: var(--font-search-color);
+    overflow: visible;
+}
+
+.connections-list th {
+    font-weight: 600;
+}
+
+.connections-list tr {
+    height: 45px;
+}
+
+.connections-list tr:nth-child(odd) {
+    background: var(--background-dark)
+}
+
+
+.connections-list td {
+    padding: 10px;
+}
+
+.connections-list .connections-list-update-hover {
+    text-align: center;
+    align-items: center;
+}
+
+.connections-list-icons {
+    text-align: center;
+    align-items: center;
+}
+
+.connections-list-icons button {
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+    scale: 1.5;
+}
+
+.connections-list i { 
+    cursor: pointer;
+    opacity: 0.25;
+    transition: 0.1s linear;
+}
+
+.connections-list i:hover {
+    opacity: 0.8;
+    color: var(--font-color-light);
+}
+
+.connections-list .connections-list-information {
+    display: grid;
+    place-content: start;
+    max-height: 400px;
+}

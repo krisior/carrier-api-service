@@ -1,0 +1,269 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --background: #ffffff;
+    --background-dark: #dddddd;
+    --font-color: #0066b3;
+    --font-color-light: #00B4D7;
+    --font-search-color: #1f1f1f;
+    --font-color-error: #ff3838;
+    --font-color-popup: #a02323;
+
+    --modal-green: #139429;
+    --modal-red: #941313;
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    
+    box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    :root {
+        scroll-behavior: smooth;
+    }
+}
+
+
+html {
+    font-family: 'Rubik', sans-serif;
+    font-size: 2.3rem;
+    
+}
+
+body {
+    min-height: 100vh;
+    width: 100vw;
+
+    background-color: var(--background);
+    color: var(--font-color);
+
+    display: grid;
+    place-content: start center;
+
+    padding: 1rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+br {
+   display: block;
+   margin: 10px 0;
+}
+
+/* pop-ups @ everywhere */
+
+.popup-created {
+    position: relative;
+    place-content: start;
+    
+    z-index: 10;
+}
+
+.popup-created .inner {
+    display: inline-flex;
+    padding: 20px;
+    border-radius: 5px;
+
+    background-color: var(--font-color-popup);
+}
+
+.inner .message-box {
+    float: left;
+    
+    width: 140%;
+
+    color: var(--background);
+    font-size: 0.5rem;
+}
+  
+.inner .confirm-close-popup {
+    float: right;
+}
+
+.popup-created .inner button {
+    width: 40px;
+
+    cursor: pointer;
+    outline: none;
+    padding: 10px;
+
+    border: none;
+    border-radius: 5px;
+
+    opacity: 0.9;
+    
+    background-color: var(--background);
+    color: var(--font-color-popup);
+    
+    text-align: center;
+    font-size: 0.3rem;
+    font-weight: 600;
+
+    transition: 0.1s ease-in;
+}
+
+.popup-created .inner button:focus, 
+.popup-created .inner button:hover {
+    opacity: 1.0;
+    background-color: var(--font-color-popup);
+    filter: brightness(1.4);
+    color: var(--background);
+}
+
+/* utilities @ everywhere */
+
+.hidden {
+    visibility: hidden;
+}
+
+.error {
+    color: var(--font-color-error);
+    text-align: center;
+}
+
+.no-hover {
+    pointer-events: none;
+}
+
+.go-back {
+    font-weight: 100;
+    font-size: 0.7rem;
+    color: var(--font-search-color);
+}
+
+.go-back button {
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.go-back button:hover {
+    color: var(--font-color-light);
+    transition: 0.1s ease;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    flex-direction: column;
+
+    bottom: 0;
+    padding-bottom: 1vh;
+    
+    color: var(--font-color);
+    opacity: 0.6;
+    font-size: 0.5rem;
+    font-weight: 500;
+    line-height: 25px;
+}
+
+.footer-create-station {
+    position: static;
+    display: inline;
+}
+
+a {
+    text-decoration: none;
+    color: var(--font-search-color);
+
+    transition: 0.1s linear;
+}
+
+a:hover {
+    color: var(--font-color-light);
+}
+
+.links {
+    margin-left: 20px;
+    line-height: 45px;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.links i {
+    scale: 0.5;
+}
+
+.information-40x {
+    font-size: 0.7rem; 
+    color: var(--font-search-color); 
+    text-align: center; 
+    line-height: 35px;
+}
+
+.carrier-adnotation {
+    font-weight: 400; 
+    font-size: 1rem
+}
+
+/* search + buttons div @ everywhere */
+
+.search-box {
+    display: block;
+    float: left;
+    width: 45%;
+
+    margin-left: 0 auto;
+}
+
+.search-box input {
+    width: 100%;
+    outline: none;
+    padding: 10px;
+    border: 0;
+    border-bottom: 2px solid var(--font-color);
+
+    opacity: 0.25;
+    background: transparent;
+    color: var(--font-search-color);
+
+    font-size: 0.5rem;
+
+    transition: 0.1s linear;
+}
+
+.search-box input:focus {
+    opacity: 0.8;
+    
+}
+  
+.create-station-box {
+    display: inline-flex;
+    float: right;
+
+    margin-right: 0 auto;
+    padding: 10px 0 10;
+}
+  
+.create-station-box button {
+    width: 100%;
+
+    cursor: pointer;
+    outline: none;
+    padding: 10px 20px 10px 20px;
+
+    border: none;
+    border-radius: 5px;
+
+    opacity: 0.25;
+    background-color: var(--font-color);
+    color: var(--background);
+
+    font-size: 0.5rem;
+
+    transition: 0.15s ease-in;
+}
+
+.create-station-box button:focus, .create-station-box button:hover {
+    opacity: 0.8;
+}

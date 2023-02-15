@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>carrier database API</title>
-    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="/css/101996-api.css" />
+    <link rel="stylesheet" href="/css/101997-crt-upd.css" />
+    <link rel="stylesheet" href="/css/102871-det.css" />
+    <link rel="stylesheet" href="/css/103998-tab.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body id="main-wrapper">
@@ -16,7 +19,7 @@
         </form>
     </div>
 
-    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    <h1>API bazy danych <i class="carrier-adnotation">przewoźnik</i></h1>
     
     <% if (connection.copy == "true") { %>
         <h6>edytuj skopiowane połączenie<span style="font-size: 0.3rem; font-weight:200"> &emsp14;<i> c_id: <%= connection.c_id %></i></span></h6>
@@ -402,6 +405,7 @@
             <div class="day-input-without-cal" id="przydzial">
                 <label><b>przydział składu</b></label><br>
                 <input type="text" class="select-input" style="width: 100px; font-size: 0.25rem" name="old_c_id" value="<%= connection.c_id %>" disabled /><br>
+                <input type="text" class="select-input" style="width: 100px; font-size: 0.25rem" name="old_c_id" value="" disabled /><br>
             </div>
             
             <div style="display: grid; place-content: end">
@@ -413,75 +417,7 @@
 
     <div style="height: 80px"></div>
 
-    <script>
-
-        // https://schinckel.net/2016/08/17/weekday-multi-select-widget/
-        // Weekday Multi-Select Widget
- 
-        function isChecked(element) {
-            return element.checked;
-        }
-        
-        function getValue(element) {
-            return element.value;
-        }
-        
-        function weekdayWidget(element) {
-            var parts = Array.apply(null, element.querySelectorAll('.week-parts [type=checkbox]'));
-            var days = Array.apply(null, element.querySelectorAll('.days [type=checkbox]'));
-        
-            function value() {
-                return days.filter(isChecked).map(getValue);
-            }
-        
-            this.value = value;
-        
-            function updateParts(selected) {
-        
-                function notSelected(val) {
-                    return selected.indexOf(val) === -1;
-                }
-        
-                parts.forEach(function(part) {
-                    var partDays = part.dataset.values.split(',');
-                    var notSelectedParts = partDays.filter(notSelected);
-
-                    if (notSelectedParts.length === 0) {
-                        part.checked = true;
-                        part.indeterminate = false;
-                    } else if (notSelectedParts.length === partDays.length) {
-                        part.checked = false;
-                        part.indeterminate = false;
-                    } else {
-                        part.indeterminate = true;
-                    }
-                    
-                });
-            }
-        
-            function updateDays(values, checked) {
-                days.forEach(function(ele) {
-                    if (values.indexOf(ele.value) > -1) {
-                        ele.checked = checked;
-                    }
-                });
-            }
-        
-            element.addEventListener('change', function(event) {
-                if (event.target.tagName === 'INPUT') {
-                    if (event.target.name === element.dataset.name) {
-                        updateParts(value());
-                    } else {
-                        updateDays(event.target.dataset.values.split(','), event.target.checked);
-                        updateParts(value());
-                    }
-                }
-            });
-        }
-
-        var widget = new weekdayWidget(document.getElementById('days'));
-
-    </script>
+    <script type="text/javascript" src="/script/3001-update-connection.js" ></script>
 
 </body>
 </html>

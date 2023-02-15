@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>carrier database API</title>
-    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="/css/101996-api.css" />
+    <link rel="stylesheet" href="/css/101997-crt-upd.css" />
+    <link rel="stylesheet" href="/css/102871-det.css" />
+    <link rel="stylesheet" href="/css/103998-tab.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body id="main-wrapper">
@@ -13,7 +16,7 @@
         <a href="/stations"><p>powrót</p></a>
     </div>
 
-    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    <h1>API bazy danych <i class="carrier-adnotation">przewoźnik</i></h1>
     <h6>edytuj istniejące dane stacyjne</h6>
 
     <br>
@@ -22,11 +25,11 @@
         
         <form class="update-form-wrapper" method="POST" action="/update-station">
 
-            <label class="password-info" style="font-size: 0.4rem; color: var(--font-search-color); margin-bottom: 5px">
+            <label class="password-info station-update-info">
                 wyszukaj po nazwie stacji
             </label>
 
-            <input type="search" list="stations" class="select-input" id="station-search-0" name="s_id" placeholder="stary identyfikator stacji" onchange="resetIfInvalid(this)" required>
+            <input type="search" list="stations" class="select-input" id="station-search-0" name="s_id" placeholder="stary identyfikator stacji" required>
             <datalist id="stations">
                 <% stationsList.forEach(station => { %> 
                 <option value="<%= station.s_id %>"> <%= station.name %> </option>

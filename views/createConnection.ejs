@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>carrier database API</title>
-    <link rel="stylesheet" href="/css/api_styles.css" />
+    <link rel="stylesheet" href="/css/101996-api.css" />
+    <link rel="stylesheet" href="/css/101997-crt-upd.css" />
+    <link rel="stylesheet" href="/css/102871-det.css" />
+    <link rel="stylesheet" href="/css/103998-tab.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body id="main-wrapper">
@@ -13,7 +16,7 @@
         <a href="/connections"><p>powrót</p></a>
     </div>
 
-    <h1>API bazy danych <i style="font-weight: 400; font-size: 1rem">przewoźnik</i></h1>
+    <h1>API bazy danych <i class="carrier-adnotation">przewoźnik</i></h1>
     <h6>nowe połączenie</h6>
 
     <br>
@@ -22,7 +25,7 @@
         <form class="create-connection" id="create-connection" method="POST" action="/create-connection" autocomplete="off">
             
             <div id="origin">
-                <input type="search" list="stations" class="select-input" id="station-search-0" name="origin" placeholder="początek trasy" onchange="resetIfInvalid(this)" required>
+                <input type="search" list="stations" class="select-input" id="station-search-0" name="origin" placeholder="początek trasy" required>
                 <datalist id="stations">
                     <% stationsList.forEach(station => { %> 
                     <option value="<%= station.name %>"> <%= station.s_id + " --- " + station.name %> </option>
@@ -94,7 +97,7 @@
                         </span>
                     <% } %><br>
                     <span>
-                        <button type="button" class="add-via-entry" id="new-entry-0" onclick="addMoreViaElements(), this.remove()"style="margin-left: 10px" ><i class="fa-solid fa-plus"></i></button>
+                        <button type="button" class="add-via-entry" id="expand-via-40" style="margin-left: 10px" ><i class="fa-solid fa-plus"></i></button>
                         <label id="additional-add-info" style="margin-left: 5px">rozwinięcie do (maksymalnie) 40 stacji pośrednich (+)</label>   
                     </span>
                 </div>
@@ -133,7 +136,7 @@
             <div class="day-input-without-cal" id="out-of-service-days">
                 <label><b>kursowanie - brak kursu</b></label><br>
                 <textarea name="outOfServiceDays" form="create-connection"></textarea>
-                <span style="">< dd.mm, dd.mm | dd.mm-dd.mm ></span>
+                <span>< dd.mm, dd.mm | dd.mm-dd.mm ></span>
                 
             </div>
 
@@ -225,82 +228,6 @@
 
     <div style="height: 80px"></div>
 
-    <script>
-        const parent = document.getElementById("via-entries")
-        
-        addMoreViaElements = () => {
-            const single = document.getElementById("single-via")
-            const info = document.getElementById("additional-add-info")
-            single.remove(); info.remove()
-
-            var newViaWrapper = document.createElement("div")
-            newViaWrapper.id = "multiple-via"
-
-            for(var i = 0; i < 40; i++) {
-                var newVia = document.createElement("span")
-                newVia.innerHTML = 
-                `<input type="search" list="stations" class="select-input" id="station-via-${i}" name="via${i}" placeholder="wybierz stację pośrednią (${i})">
-                <datalist id="stations">
-                    <% stationsList.forEach(station => { %> 
-                    <option value="<%= station.name %>"> <%= station.s_id + " --- " + station.name %> </option>
-                    <% }) %>
-                </datalist>
-                &nbsp;<input type="time" class="time-connection time-via" id="station-via-Atime${i}" name="viaATime${i}">
-                &nbsp;<input type="time" class="time-connection time-via" id="station-via-time${i}" name="viaTime${i}">
-                &nbsp;<input type="text" class="platform-track-connection" id="platform${i}" name="viaP${i}" 
-                style="margin: 0; height: 28px; width: 50px; font-size: 0.4rem" maxlength="6" placeholder="p / tor">
-                `
-                newViaWrapper.append(newVia)
-            }
-            
-            parent.append(newViaWrapper)
-
-            /* var removeInfo = document.createElement("span")
-            removeInfo.innerHTML = `
-            <button type="button" id="new-entry-0" onclick="removeMoreViaElements(), this.remove()" style="margin-left: 10px"><i class="fa-solid fa-minus"></i></button>
-            <label id="additional-remove-info" style="margin-left: 5px">reset ustawień do 10 stacji domyślnych</label>   
-            `
-            parent.append(removeInfo) */
-        }
-
-        /* removeMoreViaElements = () => {
-            const multiple = document.getElementById("multiple-via")
-            const info = document.getElementById("additional-remove-info")
-            multiple.remove(); info.remove()
-
-            var newViaWrapper = document.createElement("div")
-            newViaWrapper.id = "single-via"
-
-            for(var i = 0; i < 10; i++) {
-                var newVia = document.createElement("span")
-                newVia.innerHTML = 
-                `<input type="search" list="stations" class="select-input" id="station-via-${i}" name="via${i}" placeholder="wybierz stację pośrednią (${i})">
-                <datalist id="stations">
-                    <% stationsList.forEach(station => { %> 
-                    <option value="<%= station.name %>"> <%= station.s_id + " --- " + station.name %> </option>
-                    <% }) %>
-                </datalist>
-                &nbsp;<input type="time" class="time-connection time-via" id="station-via-time${i}" name="viaTime${i}">
-                &nbsp;<input type="text" class="platform-track-connection" id="platform${i}" name="viaP${i}" 
-                style="margin: 0; height: 20px; font-size: 0.3rem" maxlength="6" placeholder="p | tor">
-                `
-                newViaWrapper.append(newVia)
-            }
-            
-            parent.append(newViaWrapper)
-
-            var removeInfo = document.createElement("span")
-            removeInfo.innerHTML = `
-            &nbsp;&nbsp; <button type="button" id="new-entry-0" onclick="addMoreViaElements(), this.remove()" style="margin-left: 10px"><i class="fa-solid fa-plus"></i></button>
-            <label id="additional-add-info" style="margin-left: 5px">rozwinięcie do (maksymalnie) 40 stacji pośrednich (+)</label>   
-            `
-            parent.append(removeInfo)
-        } */
-
-        // https://schinckel.net/2016/08/17/weekday-multi-select-widget/
-        // Weekday Multi-Select Widget
-
-    </script>
-
+    <script type="text/javascript" src="/script/1001-create-connection.js" ></script>
 </body>
 </html>
